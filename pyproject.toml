@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "polyreduce"
+version = "0.1.0"
+description = "Polynomial-time reductions between NP problems with SAT-based verification."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "Luisangel Alexander Parra Faria" }
+]
+keywords = ["complexity", "NP", "SAT", "reductions", "theory", "polytime"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Mathematics",
+  "Topic :: Scientific/Engineering :: Information Analysis"
+]
+
+[project.urls]
+Homepage = "https://github.com/luisangelparra/polyreduce"
+Source = "https://github.com/luisangelparra/polyreduce"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "mypy>=1.10",
+  "ruff>=0.6",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

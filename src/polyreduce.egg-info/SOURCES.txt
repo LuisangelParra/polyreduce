@@ -1,0 +1,14 @@
+LICENSE
+README.md
+pyproject.toml
+src/polyreduce/__init__.py
+src/polyreduce/problems.py
+src/polyreduce/reductions.py
+src/polyreduce/sat_solver.py
+src/polyreduce/verification.py
+src/polyreduce.egg-info/PKG-INFO
+src/polyreduce.egg-info/SOURCES.txt
+src/polyreduce.egg-info/dependency_links.txt
+src/polyreduce.egg-info/requires.txt
+src/polyreduce.egg-info/top_level.txt
+test/test_basic_reduction.py

@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: polyreduce
+Version: 0.1.0
+Summary: Polynomial-time reductions between NP problems with SAT-based verification.
+Author: Luisangel Alexander Parra Faria
+License: MIT
+Project-URL: Homepage, https://github.com/luisangelparra/polyreduce
+Project-URL: Source, https://github.com/luisangelparra/polyreduce
+Keywords: complexity,NP,SAT,reductions,theory,polytime
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+Requires-Dist: mypy>=1.10; extra == "dev"
+Requires-Dist: ruff>=0.6; extra == "dev"
+Dynamic: license-file
