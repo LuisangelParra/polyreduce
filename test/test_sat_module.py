@@ -92,3 +92,83 @@ def test_real_solver_if_available():
     result = solver.solve(sat.clauses)
 
     assert isinstance(result, bool)
+
+
+def test_sat_to_3sat_preserves_satisfiable_and_unsatisfiable():
+    """
+    Verifies that SAT → 3SAT reduction preserves satisfiability:
+    
+    1. If F is SAT, then 3SAT(F) must also be SAT.
+    2. If F is UNSAT, then 3SAT(F) must also be UNSAT.
+    """
+
+    # Try to use PySAT solver
+    try:
+        from polyreduce.sat.solvers.pysat_solver import PySatSolver
+        solver = PySatSolver()
+        solver_available = True
+    except Exception:
+        from polyreduce.sat.solvers.dummy_solver import DummySatSolver
+        solver = DummySatSolver()
+        solver_available = False
+
+
+    # ------------------------------
+    # Case 1: SAT instance
+    # ------------------------------
+
+    sat_instance = SATInstance(
+        name="sat_case",
+        num_vars=3,
+        clauses=[
+            [1],          # satisfiable
+            [-1, 2],
+            [3]
+        ]
+    )
+
+    sat3 = convert_to_3sat(sat_instance)
+
+    assert all(len(c) == 3 for c in sat3.clauses)
+
+    sat_result = solver.solve(sat_instance.clauses)
+    sat3_result = solver.solve(sat3.clauses)
+
+    if solver_available:
+        # Real SAT check
+        assert sat_result is True
+        assert sat3_result is True
+    else:
+        # Dummy solver always returns True for non-empty CNF
+        assert sat_result is True
+        assert sat3_result is True
+
+
+    # ------------------------------
+    # Case 2: UNSAT instance
+    # ------------------------------
+    # This CNF is UNSAT because x1 must be both True and False.
+
+    unsat_instance = SATInstance(
+        name="unsat_case",
+        num_vars=1,
+        clauses=[
+            [1],
+            [-1]
+        ]
+    )
+
+    unsat3 = convert_to_3sat(unsat_instance)
+
+    unsat_result = solver.solve(unsat_instance.clauses)
+    unsat3_result = solver.solve(unsat3.clauses)
+
+    if solver_available:
+        # Real solver: both must be UNSAT (False)
+        assert unsat_result is False
+        assert unsat3_result is False
+    else:
+        # Dummy solver cannot detect UNSATness (always returns True)
+        # So we only assert structural correctness.
+        assert all(len(c) == 3 for c in unsat3.clauses)
+

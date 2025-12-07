@@ -6,9 +6,19 @@ from .three_sat import ThreeSATInstance
 def convert_to_3sat(instance: SATInstance) -> ThreeSATInstance:
     """
     Converts a general CNF SAT instance into an equivalent 3-SAT instance.
-    Ensures every clause has *exactly* 3 literals.
+    
+    The transformation preserves satisfiability and unsatisfiability.
 
-    Uses auxiliary variables when clause size < 3 or > 3.
+    Rules:
+    - Clause of length 1:  (a)       → (a ∨ a ∨ a)
+    - Clause of length 2:  (a ∨ b)   → (a ∨ b ∨ b)
+    - Clause of length 3:  keep as is
+    - Clause of length >3: apply standard splitting with new auxiliary variables.
+    
+    This implementation follows the canonical reduction described in:
+        - Garey & Johnson (1979)
+        - Papadimitriou: Computational Complexity
+        - Arora & Barak: Computational Complexity
     """
 
     new_clauses: List[List[int]] = []
@@ -17,43 +27,60 @@ def convert_to_3sat(instance: SATInstance) -> ThreeSATInstance:
     for clause in instance.clauses:
         k = len(clause)
 
-        # ---- Case 1: clause already size 3 ----
+        # -------------------------------------------
+        # Case 1: Clause already has exactly 3 literals
+        # -------------------------------------------
         if k == 3:
             new_clauses.append(clause)
             continue
 
-        # ---- Case 2: clause size 1 ----
-        # (a)  →  (a ∨ y1 ∨ y2)
+        # -------------------------------------------
+        # Case 2: Clause with 1 literal
+        # (a) → (a ∨ a ∨ a)
+        # This preserves satisfiability and unsatisfiability.
+        # -------------------------------------------
         if k == 1:
-            y1 = next_var; next_var += 1
-            y2 = next_var; next_var += 1
-            new_clauses.append([clause[0], y1, y2])
+            a = clause[0]
+            new_clauses.append([a, a, a])
             continue
 
-        # ---- Case 3: clause size 2 ----
-        # (a ∨ b) → (a ∨ b ∨ y1)
+        # -------------------------------------------
+        # Case 3: Clause with 2 literals
+        # (a ∨ b) → (a ∨ b ∨ b)
+        # This preserves satisfiability and unsatisfiability.
+        # -------------------------------------------
         if k == 2:
-            y = next_var; next_var += 1
-            new_clauses.append([clause[0], clause[1], y])
+            a, b = clause
+            new_clauses.append([a, b, b])
             continue
 
-        # ---- Case 4: clause size > 3 (split it) ----
-        lits = clause[:]
+        # -------------------------------------------
+        # Case 4: Clause with more than 3 literals
+        # Apply the standard splitting method:
+        # (x1 ∨ x2 ∨ x3 ∨ ... ∨ xk) becomes:
+        #   (x1 ∨ x2 ∨ y1)
+        #   (¬y1 ∨ x3 ∨ y2)
+        #   ...
+        #   (¬y_{m-1} ∨ x_{k-1} ∨ x_k)
+        # -------------------------------------------
+        lits = clause[:]  # copy
 
         while len(lits) > 3:
             a, b = lits[0], lits[1]
             y = next_var
             next_var += 1
 
-            # create a clause of 3 literals
+            # create (a ∨ b ∨ y)
             new_clauses.append([a, b, y])
 
-            # reduce the clause
+            # reduce remaining literals:
+            # replace (a, b) with (¬y)
             lits = [-y] + lits[2:]
 
-        # last clause now has size 3
+        # final 3-literal clause
         new_clauses.append(lits)
 
+    # Build final instance
     return ThreeSATInstance(
         name="3SAT-normalized",
         num_vars=next_var - 1,
