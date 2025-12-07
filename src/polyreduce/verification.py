@@ -1,14 +1,17 @@
-from typing import Tuple
+from typing import TypeVar,Tuple
 
 from .problems import ProblemInstance
 from .reductions import Reduction
 from .sat_solver import SatSolver
 
 
+P_in = TypeVar("P_in", bound=ProblemInstance, contravariant=True)
+P_out = TypeVar("P_out", bound=ProblemInstance, covariant=True)
+
 def verify_reduction_with_sat(
-    reduction: Reduction[ProblemInstance, ProblemInstance],
-    original_instance: ProblemInstance,
-    sat_instance: ProblemInstance,
+    reduction: Reduction[P_in, P_out],
+    original_instance: P_in,
+    sat_instance: P_out,
     solver: SatSolver,
 ) -> Tuple[bool, bool]:
     """

@@ -5,8 +5,8 @@ from typing import Generic, TypeVar
 
 from .problems import ProblemInstance
 
-P_in = TypeVar("P_in", bound=ProblemInstance)
-P_out = TypeVar("P_out", bound=ProblemInstance)
+P_in = TypeVar("P_in", bound=ProblemInstance, contravariant=True)
+P_out = TypeVar("P_out", bound=ProblemInstance, covariant=True)
 
 
 class Reduction(ABC, Generic[P_in, P_out]):
