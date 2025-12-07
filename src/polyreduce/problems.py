@@ -1,17 +1,20 @@
-from dataclasses import dataclass
 from typing import Any, Dict
 
 
-@dataclass
 class ProblemInstance:
     """
     Represents an instance of a decision problem.
 
-    In this first version we leave it generic. Later
-    you will be able to specialize for SAT, 3-SAT, CLIQUE, VERTEX-COVER, etc.
-    """
-    name: str
-    data: Dict[str, Any]
+    This base class does NOT use @dataclass to avoid field ordering issues
+    in subclasses (dataclasses cannot have non-default fields after default ones).
 
-    def __repr__(self) -> str:
+    Subclasses are free to use @dataclass and define their own fields. 
+    They should populate `self.data` inside their __post_init__() or __init__().
+    """
+
+    def __init__(self, name: str):
+        self.name = name
+        self.data = {}
+
+    def __repr__(self):
         return f"ProblemInstance(name={self.name!r}, keys={list(self.data.keys())})"
