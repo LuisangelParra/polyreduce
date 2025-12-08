@@ -2,7 +2,7 @@ import pytest
 
 from polyreduce.sat.sat_instance import SATInstance
 from polyreduce.sat.three_sat import ThreeSATInstance
-from polyreduce.sat.sat_to_3sat import convert_to_3sat
+from polyreduce.reductions.sat_to_3sat import convert_to_3sat
 from polyreduce.sat.solvers.dummy_solver import DummySatSolver
 
 

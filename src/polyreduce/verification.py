@@ -1,7 +1,7 @@
 from typing import TypeVar,Tuple
 
 from .problems import ProblemInstance
-from .reductions import Reduction
+from .reduction import Reduction
 from .sat_solver import SatSolver
 
 

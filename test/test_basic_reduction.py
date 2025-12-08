@@ -1,6 +1,6 @@
 from typing import Dict, Any
 from polyreduce import ProblemInstance, verify_reduction_with_sat
-from polyreduce.reductions import Reduction
+from polyreduce.reduction import Reduction
 from polyreduce.sat_solver import DummySatSolver
 
 

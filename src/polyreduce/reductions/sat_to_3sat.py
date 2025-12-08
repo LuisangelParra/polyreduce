@@ -1,6 +1,6 @@
 from typing import List
-from .sat_instance import SATInstance
-from .three_sat import ThreeSATInstance
+from ..sat.sat_instance import SATInstance
+from ..sat.three_sat import ThreeSATInstance
 
 
 def convert_to_3sat(instance: SATInstance) -> ThreeSATInstance:
