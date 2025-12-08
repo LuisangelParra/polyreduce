@@ -1,5 +1,5 @@
 from polyreduce.graph.independent_set_instance import IndependentSetInstance
-from polyreduce.graph.independent_set_to_vertex_cover import IndependentSetToVertexCover
+from polyreduce.reductions.is_to_vertex_cover import IndependentSetToVertexCover
 
 def test_independent_set_to_vertex_cover():
     # Graph: triangle

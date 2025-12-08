@@ -1,6 +1,5 @@
 from polyreduce.graph import GraphInstance
 
-
 class VertexCoverInstance(GraphInstance):
     """
     Represents an instance of the VERTEX COVER problem.

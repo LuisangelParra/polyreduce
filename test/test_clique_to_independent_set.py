@@ -1,5 +1,5 @@
 from polyreduce.graph.clique_instance import CliqueInstance
-from polyreduce.reductions.clique_to_independent_set import CliqueToIndependentSet
+from polyreduce.reductions.clique_to_is import CliqueToIndependentSet
 
 def test_clique_to_independent_set_reduction():
     # Graph with a triangle clique: 1-2-3
