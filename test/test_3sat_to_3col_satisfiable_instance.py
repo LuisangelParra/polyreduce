@@ -1,6 +1,6 @@
 from polyreduce.sat import ThreeSATInstance
 from polyreduce.graph.three_color_instance import ThreeColorInstance
-from polyreduce.reductions.sat3_to_3col import ThreeSatToThreeColor
+from polyreduce.graph.reductions.three_sat_to_three_color import ThreeSatToThreeColor
 
 
 def is_3colorable(instance: ThreeColorInstance) -> bool:

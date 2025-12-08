@@ -1,4 +1,4 @@
-from polyreduce.reduction import Reduction
+from polyreduce.core.reduction import Reduction
 from polyreduce.graph.independent_set_instance import IndependentSetInstance
 from polyreduce.graph.vertex_cover_instance import VertexCoverInstance
 

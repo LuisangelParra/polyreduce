@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List
-from polyreduce import ProblemInstance
-from polyreduce.sat_solver import SatSolver
+from polyreduce.core.problems import ProblemInstance
+from polyreduce.core.sat_solver import SatSolver
 
 
 class SATInstance(ProblemInstance):

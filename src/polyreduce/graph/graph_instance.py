@@ -1,4 +1,4 @@
-from polyreduce import ProblemInstance
+from polyreduce.core.problems import ProblemInstance
 
 
 class GraphInstance(ProblemInstance):

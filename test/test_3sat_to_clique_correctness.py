@@ -1,8 +1,8 @@
 from polyreduce.sat.sat_instance import SATInstance
 from polyreduce.sat.three_sat import ThreeSATInstance
-from polyreduce.reductions.sat_to_3sat import convert_to_3sat
-from polyreduce.reductions.sat3_to_clique import ThreeSATToClique
-from polyreduce.graph.clique_verify import verify_clique_solution
+from polyreduce.sat.reductions.sat_to_3sat import convert_to_3sat
+from polyreduce.graph.reductions.three_sat_to_clique import ThreeSATToClique
+from polyreduce.graph.verifiers.clique_verify import verify_clique_solution
 from polyreduce.sat.solvers.pysat_solver import PySatSolver
 
 

@@ -1,4 +1,4 @@
-from polyreduce.sat_solver import SatSolver
+from polyreduce.core.sat_solver import SatSolver
 
 class DummySatSolver(SatSolver):
     """

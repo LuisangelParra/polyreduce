@@ -1,4 +1,4 @@
-from polyreduce.reduction import Reduction
+from polyreduce.core.reduction import Reduction
 from polyreduce.sat.three_sat import ThreeSATInstance
 from polyreduce.graph.clique_instance import CliqueInstance
 

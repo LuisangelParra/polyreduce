@@ -1,4 +1,4 @@
-from polyreduce.reduction import Reduction
+from polyreduce.core.reduction import Reduction
 from polyreduce.graph.vertex_cover_instance import VertexCoverInstance
 from polyreduce.graph.clique_instance import CliqueInstance
 

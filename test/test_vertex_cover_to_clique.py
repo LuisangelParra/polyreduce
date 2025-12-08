@@ -1,6 +1,6 @@
 from polyreduce.graph.vertex_cover_instance import VertexCoverInstance
 from polyreduce.graph.clique_instance import CliqueInstance
-from polyreduce.reductions.vertex_cover_to_clique import VertexCoverToClique
+from polyreduce.graph.reductions.vertex_cover_to_clique import VertexCoverToClique
 
 
 def test_vertex_cover_to_clique_basic():

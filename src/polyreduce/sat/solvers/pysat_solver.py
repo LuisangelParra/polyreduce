@@ -1,6 +1,6 @@
 from typing import Sequence
 from pysat.solvers import Glucose3
-from polyreduce.sat_solver import SatSolver
+from polyreduce.core.sat_solver import SatSolver
 
 class PySatSolver(SatSolver):
     """

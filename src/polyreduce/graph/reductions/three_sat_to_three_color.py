@@ -1,4 +1,4 @@
-from polyreduce.reduction import Reduction
+from polyreduce.core.reduction import Reduction
 from polyreduce.sat import ThreeSATInstance
 from polyreduce.graph.three_color_instance import ThreeColorInstance
 
