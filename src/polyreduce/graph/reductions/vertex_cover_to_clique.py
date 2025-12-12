@@ -23,7 +23,6 @@ class VertexCoverToClique(Reduction[VertexCoverInstance, CliqueInstance]):
         n = instance.num_vertices
         original_edges = set()
 
-        # Normalize edges to (min, max) for easy lookup
         for (u, v) in instance.edges:
             if u == v:
                 continue
@@ -33,13 +32,11 @@ class VertexCoverToClique(Reduction[VertexCoverInstance, CliqueInstance]):
 
         complement_edges: list[tuple[int, int]] = []
 
-        # Build complement graph on vertices {1, 2, ..., n}
         for u in range(1, n + 1):
             for v in range(u + 1, n + 1):
                 if (u, v) not in original_edges:
                     complement_edges.append((u, v))
-
-        # New clique size: |V| - k
+                    
         new_k = n - instance.k
 
         return CliqueInstance(

@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from polyreduce.core.reduction import Reduction
-from polyreduce.sat import ThreeSATInstance
+from polyreduce.sat.three_sat import ThreeSATInstance
 from polyreduce.graph.three_color_instance import ThreeColorInstance
 
 
@@ -8,9 +10,8 @@ class ThreeSatToThreeColor(Reduction[ThreeSATInstance, ThreeColorInstance]):
     3SAT → 3COL reduction using raw literal nodes (1, -1, 2, -2, ...)
     and two nested OR-gates per clause, wired as in the lecture gadget.
     """
-
     def __init__(self):
-        super().__init__("3SAT", "3COL")
+        super().__init__("3-SAT", "3-COLOR")
 
     def _add_edge(self, edges, u, v):
         if u != v:
@@ -45,10 +46,7 @@ class ThreeSatToThreeColor(Reduction[ThreeSATInstance, ThreeColorInstance]):
             if neg not in nodes:
                 nodes.append(neg)
 
-            # x connected to ¬x
             self._add_edge(edges, pos, neg)
-
-            # both connected to H
             self._add_edge(edges, pos, "H")
             self._add_edge(edges, neg, "H")
 
@@ -58,7 +56,6 @@ class ThreeSatToThreeColor(Reduction[ThreeSATInstance, ThreeColorInstance]):
         gate_id = 1
 
         for (L1, L2, L3) in instance.clauses:
-            # Aseguramos que los literales aparezcan como nodos
             for lit in (L1, L2, L3):
                 if lit not in nodes:
                     nodes.append(lit)
@@ -71,20 +68,18 @@ class ThreeSatToThreeColor(Reduction[ThreeSATInstance, ThreeColorInstance]):
             # ===============================
             g1a = f"g_{gate_id}_a"
             g1b = f"g_{gate_id}_b"
-            O1  = f"O_{gate_id}"
+            O1 = f"O_{gate_id}"
             gate_id += 1
 
             nodes.extend([g1a, g1b, O1])
 
-            # Cada literal a UN nodo interno distinto (2 edges, no 4)
             self._add_edge(edges, L1, g1a)
             self._add_edge(edges, L2, g1b)
 
-            # Triángulo interno
             self._add_edge(edges, g1a, g1b)
             self._add_edge(edges, g1a, O1)
             self._add_edge(edges, g1b, O1)
-
+            
             # ===============================
             # OR Gate 2 for (O1, L3)
             # inputs: O1, L3
@@ -93,25 +88,23 @@ class ThreeSatToThreeColor(Reduction[ThreeSATInstance, ThreeColorInstance]):
             # ===============================
             g2a = f"g_{gate_id}_a"
             g2b = f"g_{gate_id}_b"
-            O2  = f"O_{gate_id}"
+            O2 = f"O_{gate_id}"
             gate_id += 1
 
             nodes.extend([g2a, g2b, O2])
 
-            # De nuevo: cada input a un nodo interno distinto
             self._add_edge(edges, O1, g2a)
             self._add_edge(edges, L3, g2b)
 
-            # Triángulo interno
             self._add_edge(edges, g2a, g2b)
             self._add_edge(edges, g2a, O2)
             self._add_edge(edges, g2b, O2)
 
-            # Salida final conectada a H y F (según el slide)
             self._add_edge(edges, O2, "H")
             self._add_edge(edges, O2, "F")
 
         return ThreeColorInstance(
+            name=f"{instance.name}-to-3color",
             nodes=nodes,
             edges=edges,
         )

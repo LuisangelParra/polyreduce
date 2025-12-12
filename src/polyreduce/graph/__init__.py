@@ -1,7 +1,3 @@
-"""
-Graph-based NP problem instances: CLIQUE, Independent Set, Vertex Cover, 3-COLOR.
-"""
-
 from .graph_instance import GraphInstance
 from .clique_instance import CliqueInstance
 from .independent_set_instance import IndependentSetInstance

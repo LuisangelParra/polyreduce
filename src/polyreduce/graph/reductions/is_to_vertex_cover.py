@@ -1,9 +1,13 @@
+from __future__ import annotations
+
 from polyreduce.core.reduction import Reduction
 from polyreduce.graph.independent_set_instance import IndependentSetInstance
 from polyreduce.graph.vertex_cover_instance import VertexCoverInstance
 
 
-class IndependentSetToVertexCover(Reduction[IndependentSetInstance, VertexCoverInstance]):
+class IndependentSetToVertexCover(
+    Reduction[IndependentSetInstance, VertexCoverInstance]
+):
     """
     Reduction: INDEPENDENT SET ≤p VERTEX COVER.
 
@@ -17,7 +21,6 @@ class IndependentSetToVertexCover(Reduction[IndependentSetInstance, VertexCoverI
         C is an independent set of size k
         <=> V\\C is a vertex cover of size |V| - k
     """
-
     def __init__(self):
         super().__init__("INDEPENDENT-SET", "VERTEX-COVER")
 
@@ -29,5 +32,5 @@ class IndependentSetToVertexCover(Reduction[IndependentSetInstance, VertexCoverI
             name=f"{instance.name}-to-vertex-cover",
             num_vertices=V,
             edges=instance.edges,
-            k=new_k
+            k=new_k,
         )

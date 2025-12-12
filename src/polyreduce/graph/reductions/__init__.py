@@ -1,7 +1,3 @@
-"""
-Polynomial-time reductions between graph problems.
-"""
-
 from .three_sat_to_three_color import ThreeSatToThreeColor
 from .three_sat_to_clique import ThreeSATToClique
 from .clique_to_independent_set import CliqueToIndependentSet

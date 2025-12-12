@@ -1,18 +1,12 @@
-def verify_3col(instance, candidate):
-    nodes = instance.nodes
-    edges = instance.edges
+from __future__ import annotations
 
-    # We accept string or integer nodes
-    for v in nodes:
-        if v not in candidate:
-            return False
-        if candidate[v] not in (1, 2, 3):
-            return False
+from typing import Dict
 
-    for (u, v) in edges:
-        if candidate[u] == candidate[v]:
-            return False
-
-    return True
+from polyreduce.graph.three_color_instance import ThreeColorInstance
 
 
+def verify_three_color_solution(
+    instance: ThreeColorInstance,
+    candidate: Dict[object, int],
+) -> bool:
+    return instance.verify(candidate)
