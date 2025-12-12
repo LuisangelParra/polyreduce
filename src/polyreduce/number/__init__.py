@@ -1,0 +1,2 @@
+from .subset_sum_instance import SubsetSumInstance
+from .knapsack_instance import KnapsackInstance

@@ -3,3 +3,4 @@ from .clique_instance import CliqueInstance
 from .independent_set_instance import IndependentSetInstance
 from .vertex_cover_instance import VertexCoverInstance
 from .three_color_instance import ThreeColorInstance
+from .hamiltonian_cycle_instance import HamiltonianCycleInstance
