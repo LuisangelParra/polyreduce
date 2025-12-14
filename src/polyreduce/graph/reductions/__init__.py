@@ -3,3 +3,4 @@ from .three_sat_to_clique import ThreeSATToClique
 from .clique_to_independent_set import CliqueToIndependentSet
 from .is_to_vertex_cover import IndependentSetToVertexCover
 from .vertex_cover_to_clique import VertexCoverToClique
+from .three_sat_to_hamiltonian_cycle import ThreeSATToHamiltonianCycle

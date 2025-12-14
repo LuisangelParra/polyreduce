@@ -1,1 +1,2 @@
-from .subset_sum_verify import SubsetSumVerifier
+from .subset_sum_verify import verify_subset_sum
+from .knapsack_verify import verify_knapsack
