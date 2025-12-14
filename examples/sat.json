@@ -1,0 +1,9 @@
+{
+  "type": "SAT",
+  "name": "sat_example",
+  "num_vars": 2,
+  "clauses": [
+    [1, 2],
+    [-1, 2]
+  ]
+}

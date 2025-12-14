@@ -1,0 +1,6 @@
+{
+  "type": "SUBSET_SUM",
+  "name": "subset_sum_example",
+  "numbers": [3, 7, 11, 17],
+  "target": 20
+}

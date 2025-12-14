@@ -1,0 +1,6 @@
+{
+  "type": "3COLOR",
+  "name": "3color_example",
+  "nodes": [1,2,3,4],
+  "edges": [[1,2],[2,3],[3,4]]
+}

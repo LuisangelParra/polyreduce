@@ -1,0 +1,7 @@
+{
+  "type": "KNAPSACK",
+  "name": "knapsack_example",
+  "items": [[2,3],[3,4],[4,5]],
+  "capacity": 5,
+  "min_value": 7
+}

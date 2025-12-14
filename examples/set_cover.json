@@ -1,0 +1,7 @@
+{
+  "type": "SET_COVER",
+  "name": "set_cover_example",
+  "universe": [1,2,3,4],
+  "subsets": [[1,2],[2,3],[3,4]],
+  "k": 2
+}
