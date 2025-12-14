@@ -1,33 +1,26 @@
-from polyreduce.set.set_cover_instance import SetCoverInstance
+from polyreduce.sat.three_sat import ThreeSATInstance
+from polyreduce.graph.reductions.three_sat_to_hamiltonian_cycle import ThreeSATToHamiltonianCycle
 from polyreduce.sat.solvers.pysat_solver import PySatSolver
 
-inst_true = SetCoverInstance(
-    name="sc_nontrivial_true",
-    universe={"a", "b", "c", "d", "e"},
-    subsets=[
-        {"a", "b"},        # 0
-        {"c"},             # 1
-        {"d", "e"},        # 2
-        {"b", "c"},        # 3
-        {"a", "d"},        # 4
+solver = PySatSolver()
+reduce = ThreeSATToHamiltonianCycle()
+
+sat_false = ThreeSATInstance(
+    name="3sat_false_short",
+    num_vars=3,
+    clauses=[
+        [ 1,  2,  3],
+        [ 1,  2, -3],
+        [-1, -2,  3],
+        [-1, -2, -3],
     ],
-    k=3,
 )
 
-print(inst_true.to_sat().is_satisfiable(PySatSolver()))
 
+hc_false = reduce.reduce(sat_false)
 
-inst_false = SetCoverInstance(
-    name="sc_nontrivial_false",
-    universe={"a", "b", "c", "d", "e"},
-    subsets=[
-        {"a", "b"},        # 0
-        {"b", "c"},        # 1
-        {"c", "d"},        # 2
-        {"a"},             # 3
-        {"e"},             # 4
-    ],
-    k=2,
-)
+print("SOURCE FALSE:", sat_false)
+print("TARGET FALSE:", hc_false)
 
-print(inst_false.to_sat().is_satisfiable(PySatSolver()))
+print("Is SOURCE satisfiable?", sat_false.to_sat().is_satisfiable(solver))
+print("Is TARGET satisfiable?", hc_false.to_sat().is_satisfiable(solver))

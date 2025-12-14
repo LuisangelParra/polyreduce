@@ -6,21 +6,30 @@ from polyreduce.core.reduction import Reduction
 from polyreduce.graph.hamiltonian_cycle_instance import HamiltonianCycleInstance
 from polyreduce.sat.three_sat import ThreeSATInstance
 
+
 # Hamiltonian Cycle gadget construction for a single clause
 # k is the number of clauses
 # n is the number of variables
 def _variable_gadget_edges(k: int, entry_node: int) -> Tuple[int, int, List[Tuple[int, int]], Dict[int, Tuple[Tuple[int, int], Tuple[int, int]]]]:
     edges: List[Tuple[int, int]] = []
-
+    
     entry_node = entry_node
-    exit_node =  entry_node + 3 * k + 3
+    exit_node =  entry_node + 3 * (k+1) + 3
 
     breach_node_entry = entry_node + 1
-    breach_node_exit = entry_node + 3 * k + 2
+    breach_node_exit = exit_node - 1
     
     top_nodes = [entry_node + 2 + i*3 for i in range(k+1)]
     middle_nodes = [entry_node + 3 + i*3 for i in range(k+1)]
     bottom_nodes = [entry_node + 4 + i*3 for i in range(k+1)]
+    
+    print(entry_node)
+    print(breach_node_entry)
+    print(top_nodes)
+    print(middle_nodes)
+    print(bottom_nodes)
+    print(breach_node_exit)
+    print(exit_node)
     
     # Connect entry to first clause gadget
     edges.append((entry_node, breach_node_entry))
@@ -30,7 +39,7 @@ def _variable_gadget_edges(k: int, entry_node: int) -> Tuple[int, int, List[Tupl
     # Connect clause gadgets
     
     # Vertical connections within each clause gadget
-    for i in range(k):
+    for i in range(k+1):
         edges.append((top_nodes[i], middle_nodes[i]))
         edges.append((middle_nodes[i], bottom_nodes[i]))
         
@@ -39,23 +48,21 @@ def _variable_gadget_edges(k: int, entry_node: int) -> Tuple[int, int, List[Tupl
     # True path connections
     true_path_edges = []
     
-    for i in range(k):
-        if i % 2 == 0:
-            edges.append((top_nodes[i], bottom_nodes[i + 1]))
-            true_path_edges.append((top_nodes[i], bottom_nodes[i + 1]))
-        else:
-            edges.append((bottom_nodes[i], top_nodes[i + 1]))
-            true_path_edges.append((bottom_nodes[i], top_nodes[i + 1]))
+    # Add accending edges of the gadget to true path
+    for i in range(len(top_nodes) - 1):
+        edges.append((bottom_nodes[i], top_nodes[i + 1]))
+        true_path_edges.append((bottom_nodes[i], top_nodes[i + 1]))
     
     # False path connections
     false_path_edges = []
-    for i in range(k):
-        if i % 2 == 0:
-            edges.append((bottom_nodes[i], top_nodes[i + 1]))
-            false_path_edges.append((bottom_nodes[i], top_nodes[i + 1]))
-        else:
-            edges.append((top_nodes[i], bottom_nodes[i + 1]))
-            false_path_edges.append((top_nodes[i], bottom_nodes[i + 1]))
+    
+    # Add descending edges of the gadget to false path
+    for i in range(len(top_nodes) - 1):
+        edges.append((top_nodes[i], bottom_nodes[i + 1]))
+        false_path_edges.append((top_nodes[i], bottom_nodes[i + 1]))
+    
+    print("True path edges:", true_path_edges)
+    print("False path edges:", false_path_edges)
     
     # Connect last clause gadget to exit
     edges.append((top_nodes[-1], breach_node_exit))
@@ -66,9 +73,6 @@ def _variable_gadget_edges(k: int, entry_node: int) -> Tuple[int, int, List[Tupl
     clause_edge_map: Dict[int, Tuple[Tuple[int, int], Tuple[int, int]]] = {}
     for i in range(k):
         clause_edge_map[i] = (true_path_edges[i], false_path_edges[i])
-        
-    print(clause_edge_map)
-    
 
     return entry_node, exit_node, edges, clause_edge_map
 
@@ -87,7 +91,7 @@ class ThreeSATToHamiltonianCycle(Reduction[ThreeSATInstance, HamiltonianCycleIns
             if (len(gadgets) == 0):
                 entry_node = 1
             else:
-                entry_node = gadgets[-1][1]
+                entry_node = gadgets[-1][1] 
             gadget = _variable_gadget_edges(k, entry_node)
             gadgets.append(gadget)
             edges.extend(gadget[2])
@@ -99,22 +103,31 @@ class ThreeSATToHamiltonianCycle(Reduction[ThreeSATInstance, HamiltonianCycleIns
         for clause_index, clause in enumerate(instance.clauses):
             clause_satisfied_edges = []
             new_vertex = exit_node + 1 + clause_index
+            seen_literals = set()
             for literal in clause:
+                v = abs(literal)
+                if v in seen_literals:
+                    continue
+                seen_literals.add(v)
                 var_index = vars_set.index(abs(literal))
                 gadget = gadgets[var_index]
                 clause_edge_map = gadget[3]
                 true_edge, false_edge = clause_edge_map[clause_index]
+                print("Literal", literal, "uses edges:", true_edge, false_edge)
                 if literal > 0:
                     clause_satisfied_edges.append((true_edge[0], new_vertex))
                     clause_satisfied_edges.append((new_vertex, true_edge[1]))
                 else:
                     clause_satisfied_edges.append((false_edge[0], new_vertex))
                     clause_satisfied_edges.append((new_vertex, false_edge[1]))
+            print("Clause", clause_index, "satisfied edges:", clause_satisfied_edges)
             edges.extend(clause_satisfied_edges)
             
         # Close the cycle
         edges.append((exit_node, entry_node))
         
+        print("Total edges in HAM-CYCLE instance:", len(edges))
+        print("Edges:", edges)
             
         return HamiltonianCycleInstance(
             name=f"HAM-CYCLE_from_{instance.name}",
